@@ -9,7 +9,7 @@ const tasksRouter = express.Router();
  */
 tasksRouter.post("/", async (req, res) => {
   try {
-    const { title, description, subtasks } = req.body;
+    const { title, description, subtasks,status } = req.body;
     if (!title) {
       return res.status(400).json({ error: "Title is required" });
     }
@@ -18,6 +18,7 @@ tasksRouter.post("/", async (req, res) => {
       title,
       description: description || "",
       subtasks: subtasks || [],
+      status: status || "To Do",
     });
 
     const savedTask = await newTask.save();

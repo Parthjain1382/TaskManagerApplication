@@ -38,7 +38,7 @@ export class KanbanBoardContainerComponent {
       return; // Prevents opening multiple dialogs
     }
 
-    this.dialog.open(AddNewTaskPopUpComponent, {
+    const dialogRef = this.dialog.open(AddNewTaskPopUpComponent, {
       width: '35vw',
       height: '63vh',
       maxWidth: '90vw',
@@ -48,7 +48,85 @@ export class KanbanBoardContainerComponent {
       hasBackdrop: true,
       disableClose: false,
     });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if(!result.isEdit){
+        console.log('Task added successfully');
+        if (this.TaskListData) {
+          if (result.response.status === 'todo') {
+            if (result.response.status === 'todo') {
+              if (!this.TaskListData.todo) {
+              this.TaskListData.todo = [];
+              }
+              this.TaskListData.todo.push(result.response);
+            } else if (result.response.status === 'inProgress') {
+              if (!this.TaskListData.inProgress) {
+              this.TaskListData.inProgress = [];
+              }
+              this.TaskListData.inProgress.push(result.response);
+            } else if (result.response.status === 'done') {
+              if (!this.TaskListData.done) {
+              this.TaskListData.done = [];
+              }
+              this.TaskListData.done.push(result.response);
+            }
+          }
+        }
+        this.cdr.detectChanges();
+      }
+    })
   }
+
+  onEditClick(task: Task) {
+    if (this.dialog.openDialogs.length > 0) {
+      return; // Prevents opening multiple dialogs
+    }
+
+    const dialogRef = this.dialog.open(AddNewTaskPopUpComponent, {
+      width: '35vw',
+      height: '63vh',
+      maxWidth: '90vw',
+      data: { taskType: task.status, isEdit: true, task },
+      panelClass: 'centered-dialog',
+      autoFocus: true,
+      hasBackdrop: true,
+      disableClose: false
+    })
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (this.TaskListData) {
+        const updatedTask = result.response;
+        this.updateTask(updatedTask);
+    }
+  });
+
+   }
+
+
+  updateTask(updatedTask: Task) {
+    if (!this.TaskListData) return;
+
+    // Find the current list
+    let currentList: Task[] | null = null;
+
+    if (updatedTask.status === 'todo') {
+      currentList = this.TaskListData.todo;
+    } else if (updatedTask.status === 'inProgress') {
+      currentList = this.TaskListData.inProgress;
+    } else if (updatedTask.status === 'done') {
+      currentList = this.TaskListData.done;
+    }
+
+    if (currentList) {
+      const taskIndex = currentList.findIndex(t => t._id === updatedTask._id);
+      if (taskIndex !== -1) {
+        currentList[taskIndex] = updatedTask;
+      }
+    }
+
+    this.cdr.detectChanges();
+  }
+
 
 
   onDeleteClick(task: Task) {

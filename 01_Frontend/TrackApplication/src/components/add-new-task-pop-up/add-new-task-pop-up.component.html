@@ -13,13 +13,6 @@
       </div>
     </div>
 
-    <!-- <div class="form-group">
-      <label for="SubTask">SubTask</label>
-      <input type="SubTask" id="SubTask" formControlName="SubTask" class="form-control">
-      <div *ngIf="detailsForm.get('SubTask')?.invalid && detailsForm.get('SubTask')?.touched" class="error-message">
-        Please enter a valid SubTask
-      </div>
-    </div> -->
     <div class="form-group">
       <label>Subtasks</label>
       <div formArrayName="subtasks">
@@ -46,6 +39,11 @@
     </form>
   </div>
   <div class="footer">
-    <button class="add-btn" (click)="onAddClick()">Add</button>
+    <button
+      class="add-Edit-btn"
+      [disabled]="isEdit ? !detailsForm.dirty : detailsForm.invalid"
+      (click)="isEdit ? onEditClick() : onAddClick()">
+      {{ isEdit ? 'Edit' : 'Add' }}
+    </button>
   </div>
 </div>
