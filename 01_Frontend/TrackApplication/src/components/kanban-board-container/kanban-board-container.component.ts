@@ -5,11 +5,12 @@ import { AddNewTaskPopUpComponent } from '../add-new-task-pop-up/add-new-task-po
 import { TaskService } from '../../services/task.service';
 import { AllTask, Task } from '../../interface/tasks';
 import Swal from 'sweetalert2';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-kanban-board-container',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DragDropModule],
   templateUrl: './kanban-board-container.component.html',
   styleUrl: './kanban-board-container.component.css'
 })
@@ -40,7 +41,7 @@ export class KanbanBoardContainerComponent {
 
     const dialogRef = this.dialog.open(AddNewTaskPopUpComponent, {
       width: '35vw',
-      height: '63vh',
+      height: '65vh',
       maxWidth: '90vw',
       data: { taskType: type, isEdit: false },
       panelClass: 'centered-dialog',
@@ -54,7 +55,6 @@ export class KanbanBoardContainerComponent {
         console.log('Task added successfully');
         if (this.TaskListData) {
           if (result.response.status === 'todo') {
-            if (result.response.status === 'todo') {
               if (!this.TaskListData.todo) {
               this.TaskListData.todo = [];
               }
@@ -70,7 +70,7 @@ export class KanbanBoardContainerComponent {
               }
               this.TaskListData.done.push(result.response);
             }
-          }
+
         }
         this.cdr.detectChanges();
       }
@@ -127,8 +127,6 @@ export class KanbanBoardContainerComponent {
     this.cdr.detectChanges();
   }
 
-
-
   onDeleteClick(task: Task) {
     Swal.fire({
       title: 'Are you sure?',
@@ -161,9 +159,53 @@ export class KanbanBoardContainerComponent {
 
         this.cdr.detectChanges();
       }
-      Swal.fire('Deleted!', 'The task has been deleted.', 'success');
     });
   }
 
+  // CDK Drag and Drop Implementation
+  onDrop(event: CdkDragDrop<Task[]>) {
+    if (!this.TaskListData) return;
 
+    if (event.previousContainer === event.container) {
+      // Reordering within the same list
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      // Moving between lists
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+
+      // Update the task status based on the new container
+      const movedTask = event.container.data[event.currentIndex];
+      const newStatus = this.getStatusFromContainerId(event.container.id);
+
+      if (movedTask && newStatus) {
+        // Update task status in UI immediately
+        movedTask.status = newStatus;
+
+        // Update task status in backend
+        this.taskService.updateTask(movedTask._id, movedTask).subscribe(
+          () => console.log('Task status updated successfully'),
+          error => console.error('Error updating task status:', error)
+        );
+      }
+    }
+
+    this.cdr.detectChanges();
+  }
+
+  // Helper method to determine status from container ID
+  private getStatusFromContainerId(containerId: string): string {
+    if (containerId === 'todo-list') return 'todo';
+    if (containerId === 'inProgress-list') return 'inProgress';
+    if (containerId === 'done-list') return 'done';
+    return '';
+  }
 }

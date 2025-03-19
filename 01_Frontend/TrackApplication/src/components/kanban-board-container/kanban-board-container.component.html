@@ -1,12 +1,22 @@
 <div class="kanban-container">
   <div class="to-do-container">
     <div class="header">
-      <span class="header-title">To-do <span class="count">{{TaskListData?.done?.length || 0}}</span></span>
+      <span class="header-title">To-do <span class="count">{{TaskListData?.todo?.length || 0}}</span></span>
       <button class="add-task-btn" (click)="addNewTask('todo')">+ Add</button>
     </div>
-    <div class="to-do-list" *ngIf="(TaskListData?.todo?.length ?? 0) > 0">
-      <div class="task-item" *ngFor="let item of TaskListData?.todo">
-        <div class="drag-handle"></div>
+    <div
+      class="to-do-list"
+      id="todo-list"
+      cdkDropList
+      [cdkDropListData]="TaskListData?.todo || []"
+      [cdkDropListConnectedTo]="['inProgress-list', 'done-list']"
+      (cdkDropListDropped)="onDrop($event)">
+      <div
+        class="task-item"
+        *ngFor="let item of TaskListData?.todo"
+        cdkDrag
+        [cdkDragData]="item">
+        <div class="drag-handle" cdkDragHandle></div>
         <span class="title">{{item.title}}</span>
         <span class="description">{{item.description}}</span>
         <div class="subtasks">
@@ -20,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="in-progress-list" *ngIf="!TaskListData?.todo || TaskListData?.todo?.length === 0">
+    <div class="empty-list" *ngIf="!TaskListData?.todo || TaskListData?.todo?.length === 0">
       <span>No tasks in To-do State</span>
     </div>
   </div>
@@ -30,9 +40,19 @@
       <span class="header-title">In-Progress <span class="count">{{TaskListData?.inProgress?.length || 0}}</span></span>
       <button class="add-task-btn" (click)="addNewTask('inProgress')">+ Add</button>
     </div>
-    <div class="in-progress-list" *ngIf="(TaskListData?.inProgress?.length ?? 0) > 0">
-      <div class="task-item" *ngFor="let item of TaskListData?.inProgress">
-        <div class="drag-handle"></div>
+    <div
+      class="in-progress-list"
+      id="inProgress-list"
+      cdkDropList
+      [cdkDropListData]="TaskListData?.inProgress || []"
+      [cdkDropListConnectedTo]="['todo-list', 'done-list']"
+      (cdkDropListDropped)="onDrop($event)">
+      <div
+        class="task-item"
+        *ngFor="let item of TaskListData?.inProgress"
+        cdkDrag
+        [cdkDragData]="item">
+        <div class="drag-handle" cdkDragHandle></div>
         <span class="title">{{item.title}}</span>
         <span class="description">{{item.description}}</span>
         <div class="subtasks">
@@ -46,7 +66,7 @@
         </div>
       </div>
     </div>
-    <div class="in-progress-list" *ngIf="!TaskListData?.inProgress || TaskListData?.inProgress?.length === 0">
+    <div class="empty-list" *ngIf="!TaskListData?.inProgress || TaskListData?.inProgress?.length === 0">
       <span>No tasks in In-Progress State</span>
     </div>
   </div>
@@ -56,9 +76,19 @@
       <span class="header-title">Done <span class="count">{{TaskListData?.done?.length || 0}}</span></span>
       <button class="add-task-btn" (click)="addNewTask('done')">+ Add</button>
     </div>
-    <div class="done-list" *ngIf="(TaskListData?.done?.length ?? 0) > 0">
-      <div class="task-item" *ngFor="let item of TaskListData?.done">
-        <div class="drag-handle"></div>
+    <div
+      class="done-list"
+      id="done-list"
+      cdkDropList
+      [cdkDropListData]="TaskListData?.done || []"
+      [cdkDropListConnectedTo]="['todo-list', 'inProgress-list']"
+      (cdkDropListDropped)="onDrop($event)">
+      <div
+        class="task-item"
+        *ngFor="let item of TaskListData?.done"
+        cdkDrag
+        [cdkDragData]="item">
+        <div class="drag-handle" cdkDragHandle></div>
         <span class="title">{{item.title}}</span>
         <span class="description">{{item.description}}</span>
         <div class="subtasks">
@@ -72,7 +102,7 @@
         </div>
       </div>
     </div>
-    <div class="in-progress-list" *ngIf="!TaskListData?.done || TaskListData?.done?.length === 0">
+    <div class="empty-list" *ngIf="!TaskListData?.done || TaskListData?.done?.length === 0">
       <span>No tasks in Done State</span>
     </div>
   </div>
