@@ -1,6 +1,7 @@
 {
   "name": "02_backend",
   "version": "0.0.1",
+  "type": "module", 
   "description": "The backend for Kanban board application",
   "main": "index.js",
   "scripts": {
@@ -11,5 +12,12 @@
     "board"
   ],
   "author": "Pranay Jain",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.12.1"
+  }
 }
