@@ -1,0 +1,70 @@
+<div class="kanban-container">
+  <div class="to-do-container">
+    <div class="header">
+      <span class="header-title">To-do <span class="count">{{dataExample.done.length}}</span></span>
+      <button class="add-task-btn" (click)="addNewTask('todo')">+ Add</button>
+    </div>
+    <div class="to-do-list">
+      <div class="task-item" *ngFor="let item of dataExample.todo">
+        <div class="drag-handle"></div>
+        <span class="title">{{item.title}}</span>
+        <span class="description">{{item.description}}</span>
+        <div class="subtasks">
+          <div class="subtask-item" *ngFor="let subtask of item.subtasks">
+            <span>- {{subtask}}</span>
+          </div>
+        </div>
+        <div class="task-actions">
+          <button>Edit</button>
+          <button>Move</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="in-progress-container">
+    <div class="header">
+      <span class="header-title">In-Progress <span class="count">{{dataExample.inProgress.length}}</span></span>
+      <button class="add-task-btn">+ Add</button>
+    </div>
+    <div class="in-progress-list" *ngIf="dataExample.inProgress.length !==0">
+      <div class="task-item" *ngFor="let item of dataExample.inProgress">
+        <div class="drag-handle"></div>
+        <span class="title">{{item.title}}</span>
+        <span class="description">{{item.description}}</span>
+        <div class="subtasks">
+          <div class="subtask-item" *ngFor="let subtask of item.subtasks">
+            <span>- {{subtask}}</span>
+          </div>
+        </div>
+        <div class="task-actions">
+          <button>Edit</button>
+          <button>Move</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="done-container">
+    <div class="header">
+      <span class="header-title">Done <span class="count">{{dataExample.done.length}}</span></span>
+      <button class="add-task-btn">+ Add</button>
+    </div>
+    <div class="done-list">
+      <div class="task-item" *ngFor="let item of dataExample.done">
+        <div class="drag-handle"></div>
+        <span class="title">{{item.title}}</span>
+        <span class="description">{{item.description}}</span>
+        <div class="subtasks">
+          <div class="subtask-item" *ngFor="let subtask of item.subtasks">
+            <span>- {{subtask}}</span>
+          </div>
+        </div>
+        <div class="task-actions">
+          <button>Edit</button>
+          <button>Move</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

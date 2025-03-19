@@ -33,12 +33,23 @@ tasksRouter.post("/", async (req, res) => {
  */
 tasksRouter.get("/", async (req, res) => {
   try {
-    const tasks = await Task.find(); // Fetch tasks from MongoDB
-    res.json(tasks);
+    const tasks = await Task.find(); // Fetch all tasks
+
+    // Group tasks by status
+    const groupedTasks = tasks.reduce((acc, task) => {
+      if (!acc[task.status]) {
+        acc[task.status] = [];
+      }
+      acc[task.status].push(task);
+      return acc;
+    }, {});
+
+    res.json(groupedTasks);
   } catch (error) {
     res.status(500).json({ error: "Error fetching tasks" });
   }
 });
+
 
 /**
  * @route   PUT /api/tasks/:id
