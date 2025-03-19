@@ -20,6 +20,15 @@ export class AddNewTaskPopUpComponent {
     description: ['']
   })
 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+  private dialogRef:MatDialogRef<AddNewTaskPopUpComponent>,
+  private fb: FormBuilder) { }
+
+  ngOnInit() {
+    this.taskType = this.data.taskType
+  }
+
+
   createSubtask() {
     return this.fb.control('', Validators.required);
   }
@@ -38,14 +47,6 @@ export class AddNewTaskPopUpComponent {
 
   get subtasksArray() {
     return this.detailsForm.get('subtasks') as FormArray;
-  }
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-  private dialogRef:MatDialogRef<AddNewTaskPopUpComponent>,
-  private fb: FormBuilder) { }
-
-  ngOnInit() {
-    this.taskType = this.data.taskType
   }
 
   closePopUp(){

@@ -1,11 +1,11 @@
 <div class="kanban-container">
   <div class="to-do-container">
     <div class="header">
-      <span class="header-title">To-do <span class="count">{{dataExample.done.length}}</span></span>
+      <span class="header-title">To-do <span class="count">{{TaskListData?.done?.length || 0}}</span></span>
       <button class="add-task-btn" (click)="addNewTask('todo')">+ Add</button>
     </div>
-    <div class="to-do-list">
-      <div class="task-item" *ngFor="let item of dataExample.todo">
+    <div class="to-do-list" *ngIf="(TaskListData?.todo?.length ?? 0) > 0">
+      <div class="task-item" *ngFor="let item of TaskListData?.todo">
         <div class="drag-handle"></div>
         <span class="title">{{item.title}}</span>
         <span class="description">{{item.description}}</span>
@@ -16,19 +16,22 @@
         </div>
         <div class="task-actions">
           <button>Edit</button>
-          <button>Move</button>
+          <button (click)="onDeleteClick(item)">Delete 🗑️</button>
         </div>
       </div>
+    </div>
+    <div class="in-progress-list" *ngIf="!TaskListData?.todo || TaskListData?.todo?.length === 0">
+      <span>No tasks in To-do State</span>
     </div>
   </div>
 
   <div class="in-progress-container">
     <div class="header">
-      <span class="header-title">In-Progress <span class="count">{{dataExample.inProgress.length}}</span></span>
+      <span class="header-title">In-Progress <span class="count">{{TaskListData?.inProgress?.length || 0}}</span></span>
       <button class="add-task-btn">+ Add</button>
     </div>
-    <div class="in-progress-list" *ngIf="dataExample.inProgress.length !==0">
-      <div class="task-item" *ngFor="let item of dataExample.inProgress">
+    <div class="in-progress-list" *ngIf="(TaskListData?.inProgress?.length ?? 0) > 0">
+      <div class="task-item" *ngFor="let item of TaskListData?.inProgress">
         <div class="drag-handle"></div>
         <span class="title">{{item.title}}</span>
         <span class="description">{{item.description}}</span>
@@ -39,19 +42,22 @@
         </div>
         <div class="task-actions">
           <button>Edit</button>
-          <button>Move</button>
+          <button>Delete 🗑️</button>
         </div>
       </div>
+    </div>
+    <div class="in-progress-list" *ngIf="!TaskListData?.inProgress || TaskListData?.inProgress?.length === 0">
+      <span>No tasks in In-Progress State</span>
     </div>
   </div>
 
   <div class="done-container">
     <div class="header">
-      <span class="header-title">Done <span class="count">{{dataExample.done.length}}</span></span>
+      <span class="header-title">Done <span class="count">{{TaskListData?.done?.length || 0}}</span></span>
       <button class="add-task-btn">+ Add</button>
     </div>
-    <div class="done-list">
-      <div class="task-item" *ngFor="let item of dataExample.done">
+    <div class="done-list" *ngIf="(TaskListData?.done?.length ?? 0) > 0">
+      <div class="task-item" *ngFor="let item of TaskListData?.done">
         <div class="drag-handle"></div>
         <span class="title">{{item.title}}</span>
         <span class="description">{{item.description}}</span>
@@ -62,9 +68,12 @@
         </div>
         <div class="task-actions">
           <button>Edit</button>
-          <button>Move</button>
+          <button>Delete 🗑️</button>
         </div>
       </div>
+    </div>
+    <div class="in-progress-list" *ngIf="!TaskListData?.done || TaskListData?.done?.length === 0">
+      <span>No tasks in Done State</span>
     </div>
   </div>
 </div>
