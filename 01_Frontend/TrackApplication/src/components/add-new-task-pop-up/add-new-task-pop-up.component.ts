@@ -18,9 +18,9 @@ export class AddNewTaskPopUpComponent implements OnInit {
   isEdit: boolean = false;
 
   detailsForm: FormGroup = this.fb.group({
-    title: ['', Validators.required],
+    title: ['', [Validators.required, Validators.maxLength(50)]],
     subtasks: this.fb.array([]), // Initialize empty
-    description: ['']
+    description: ['', Validators.maxLength(200)]
   });
   swal: any;
 
