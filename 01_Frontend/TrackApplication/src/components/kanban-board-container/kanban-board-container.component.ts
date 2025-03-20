@@ -31,6 +31,12 @@ export class KanbanBoardContainerComponent {
   getAllTasksList() {
     this.taskService.getTasks().subscribe((response) => {
       this.TaskListData = response;
+
+      if (this.TaskListData) {
+        if (!this.TaskListData.todo) this.TaskListData.todo = [];
+        if (!this.TaskListData.inProgress) this.TaskListData.inProgress = [];
+        if (!this.TaskListData.done) this.TaskListData.done = [];
+      }
     });
   }
 
@@ -166,6 +172,12 @@ export class KanbanBoardContainerComponent {
   onDrop(event: CdkDragDrop<Task[]>) {
     if (!this.TaskListData) return;
 
+      // Ensure all arrays exist
+      if (!this.TaskListData.todo) this.TaskListData.todo = [];
+      if (!this.TaskListData.inProgress) this.TaskListData.inProgress = [];
+      if (!this.TaskListData.done) this.TaskListData.done = [];
+
+      debugger
     if (event.previousContainer === event.container) {
       // Reordering within the same list
       moveItemInArray(

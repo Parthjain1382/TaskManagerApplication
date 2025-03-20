@@ -24,7 +24,7 @@
             </button>
           </div>
           <div *ngIf="subtasksArray.at(i).invalid && subtasksArray.at(i).touched" class="error-message">
-            Subtask is required
+            Subtask is required and size should be less than 50
           </div>
         </div>
       </div>
@@ -35,6 +35,9 @@
     <div class="form-group">
       <label for="description">Description</label>
       <textarea id="description" formControlName="description" class="form-control" rows="4"></textarea>
+      <div *ngIf="detailsForm.get('description')?.errors?.['maxlength'] && detailsForm.get('description')?.touched" class="error-message">
+        Description size should be less than 100
+      </div>
     </div>
     </form>
   </div>

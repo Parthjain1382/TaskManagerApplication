@@ -59,7 +59,7 @@ export class AddNewTaskPopUpComponent implements OnInit {
   }
 
   createSubtask() {
-    return this.fb.control('', Validators.required);
+    return this.fb.control('', [Validators.required, Validators.maxLength(50)]);
   }
 
   addSubtask() {
