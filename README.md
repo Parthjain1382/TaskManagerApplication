@@ -1,6 +1,6 @@
 # Kanban Board
 
-A simple and interactive Kanban board built using Angular, Angular Material, and CDK Drag and Drop functionality.
+A simple and interactive responsive Kanban board built using Angular, Angular Material, and CDK Drag and Drop functionality.
 
 ## 🚀 Features
 - Add, edit, and delete tasks
@@ -41,7 +41,6 @@ npm install
 Start the backend server:
 node index.js
 By default, the backend runs on http://localhost:3000/.
-
 
 📌 Assumptions
 -The application assumes that Angular CDK Drag and Drop is used for implementing task movement between columns.
