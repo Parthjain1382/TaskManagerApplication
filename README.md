@@ -2,6 +2,9 @@
 
 A simple and interactive responsive Kanban board built using Angular, Angular Material, and CDK Drag and Drop functionality.
 
+## Deployed Project Link:
+https://taskmanageappl.netlify.app/
+
 ## 🚀 Features
 - Add, edit, and delete tasks
 - Categorize tasks into **To-do, In Progress, and Done**
